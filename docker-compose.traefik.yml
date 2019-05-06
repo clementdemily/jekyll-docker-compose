@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+      - "35729:35729"
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=clement-blog"
+      - "traefik.frontend.rule=Host:clement.test"
+      - "traefik.port=4000"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.docker.network=traefik"
+    volumes:
+      - .:/app
+      - ./_site:/app/_site
+
+
+networks:
+  traefik:
+    external:
+      name: traefik
